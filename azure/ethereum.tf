@@ -79,7 +79,7 @@ resource "azurerm_network_security_rule" "sharedInboundInternetAllow" {
 # PUBLIC IPS
 # -----------------------------
 resource "azurerm_public_ip" "validator" {
-  count = var.nb_validators
+  count               = var.nb_validators
   name                = format("ip-validator%03d", count.index + 1)
   resource_group_name = azurerm_resource_group.rg.name
   location            = azurerm_resource_group.rg.location
@@ -99,7 +99,7 @@ resource "azurerm_public_ip" "shared" {
 # NETWORK INTERFACES
 # -----------------------------
 resource "azurerm_network_interface" "validator" {
-  count = var.nb_validators
+  count                         = var.nb_validators
   name                          = format("nic-validator%03d", count.index + 1)
   location                      = azurerm_resource_group.rg.location
   resource_group_name           = azurerm_resource_group.rg.name
@@ -135,7 +135,7 @@ resource "azurerm_network_interface" "shared" {
 # MANAGED DISK
 # ---------------------------------------------------------
 resource "azurerm_managed_disk" "validator" {
-  count = var.nb_validators
+  count                = var.nb_validators
   name                 = format("md-validator%03d", count.index + 1)
   location             = azurerm_resource_group.rg.location
   resource_group_name  = azurerm_resource_group.rg.name
@@ -161,12 +161,12 @@ resource "azurerm_managed_disk" "shared" {
 # VIRTUAL MACHINES
 # -----------------------------
 resource "azurerm_linux_virtual_machine" "validator" {
-  count = var.nb_validators
-  name                = format("use2lvalidator%03dprod", count.index + 1)
-  resource_group_name = azurerm_resource_group.rg.name
-  location            = azurerm_resource_group.rg.location
-  size                = "Standard_D2s_v5"
-  admin_username      = var.admin_username
+  count                 = var.nb_validators
+  name                  = format("use2lvalidator%03dprod", count.index + 1)
+  resource_group_name   = azurerm_resource_group.rg.name
+  location              = azurerm_resource_group.rg.location
+  size                  = "Standard_D2s_v5"
+  admin_username        = var.admin_username
   network_interface_ids = [local.nic_ids[count.index]]
 
   admin_ssh_key {
@@ -229,7 +229,7 @@ resource "azurerm_linux_virtual_machine" "shared" {
 # VIRTUAL MACHINE DATA DISK ATTACHMENT
 # ------------------------------------
 resource "azurerm_virtual_machine_data_disk_attachment" "validator" {
-  count = var.nb_validators
+  count              = var.nb_validators
   managed_disk_id    = azurerm_managed_disk.validator.*.id[count.index]
   virtual_machine_id = azurerm_linux_virtual_machine.validator.*.id[count.index]
   lun                = 1
@@ -243,6 +243,6 @@ resource "azurerm_virtual_machine_data_disk_attachment" "shared" {
   caching            = "ReadWrite"
 }
 
-locals {  
+locals {
   nic_ids = azurerm_network_interface.validator.*.id
 }
