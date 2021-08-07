@@ -5,7 +5,7 @@ terraform {
   required_providers {
     azurerm = {
       source  = "hashicorp/azurerm"
-      version = "=2.59.0"
+      version = "=2.71.0"
     }
     cloudinit = {
       source  = "hashicorp/cloudinit"
@@ -17,6 +17,9 @@ terraform {
 # Configure the Microsoft Azure Provider
 provider "azurerm" {
   features {}
+
+  subscription_id = "48fd0afc-a663-4ed6-b9c8-cb648e3dcb25"
+  tenant_id       = "3c7a9fb7-fd68-4ed3-b0c6-ff9dc05af75f"
 }
 
 # -----------------------------
