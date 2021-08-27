@@ -5,4 +5,5 @@ docker run -d -h validator1.cryptofarmers.io -v /data/ethereum:/data -p 4000:400
   --rpc-host=0.0.0.0 \
   --monitoring-host=0.0.0.0 \
   --http-web3provider=https://mainnet.infura.io/v3/e688007f8726451192c518e37fe0cdda \
+  --fallback-web3provider=https://eth-mainnet.alchemyapi.io/v2/sCbtfxyKigCsKteX3M_pLT-KnboRLMcI \
   --accept-terms-of-use
