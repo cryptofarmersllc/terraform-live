@@ -179,7 +179,7 @@ resource "azurerm_linux_virtual_machine" "validator" {
   name                  = format("use2lvalidator%03dprod", count.index + 1)
   resource_group_name   = azurerm_resource_group.rg.name
   location              = azurerm_resource_group.rg.location
-  size                  = "Standard_D2s_v4"
+  size                  = "Standard_E2s_v5"
   admin_username        = var.admin_username
   network_interface_ids = [local.nic_ids[count.index]]
 

@@ -23,7 +23,7 @@ variable "admin_username" {
 variable "keep_disk" {
   type        = bool
   description = "Prevents deleting storage disk when a VM is re-provisioned"
-  default     = false
+  default     = true
 }
 
 variable "users" {
