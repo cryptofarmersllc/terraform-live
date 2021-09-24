@@ -8,12 +8,12 @@ resource "azurerm_subnet" "validator" {
   address_prefixes     = ["10.0.0.0/24"]
 }
 
-/* resource "azurerm_subnet" "shared" {
+ resource "azurerm_subnet" "shared" {
   name                 = "shared-subnet"
   resource_group_name  = azurerm_resource_group.rg.name
   virtual_network_name = azurerm_virtual_network.vn.name
   address_prefixes     = ["10.0.1.0/27"]
-} */
+}
 
 # -----------------------------
 # NETWORK SECURITY GROUPS
@@ -30,7 +30,7 @@ resource "azurerm_subnet_network_security_group_association" "validator" {
   network_security_group_id = azurerm_network_security_group.validator.id
 }
 
-/* resource "azurerm_network_security_group" "shared" {
+ resource "azurerm_network_security_group" "shared" {
   name                = "nsg-shared"
   location            = azurerm_resource_group.rg.location
   resource_group_name = azurerm_resource_group.rg.name
@@ -40,7 +40,7 @@ resource "azurerm_subnet_network_security_group_association" "validator" {
 resource "azurerm_subnet_network_security_group_association" "shared" {
   subnet_id                 = azurerm_subnet.shared.id
   network_security_group_id = azurerm_network_security_group.shared.id
- }*/
+ }
 
 # --------------------------------------------------
 # NETWORK SECURITY RULES
@@ -75,7 +75,7 @@ resource "azurerm_network_security_rule" "validatorInboundInternetUDPAllow" {
 }
 
 # Allow ssh port access from Internet
-/* resource "azurerm_network_security_rule" "sharedInboundInternetAllow" {
+ resource "azurerm_network_security_rule" "sharedInboundInternetAllow" {
   name                        = "IInternetA"
   priority                    = 1000
   direction                   = "Inbound"
@@ -84,10 +84,10 @@ resource "azurerm_network_security_rule" "validatorInboundInternetUDPAllow" {
   source_address_prefix       = "Internet"
   source_port_range           = "*"
   destination_address_prefix  = "VirtualNetwork"
-  destination_port_range      = "1122"
+  destination_port_ranges      = ["443", "1122", "9090", "9092"]
   resource_group_name         = azurerm_resource_group.rg.name
   network_security_group_name = azurerm_network_security_group.shared.name
-} */
+}
 
 # -----------------------------
 # PUBLIC IPS
@@ -101,13 +101,13 @@ resource "azurerm_public_ip" "validator" {
   tags                = local.eth_tags
 }
 
-/* resource "azurerm_public_ip" "shared" {
+resource "azurerm_public_ip" "shared" {
   name                = "ip-shared"
   resource_group_name = azurerm_resource_group.rg.name
   location            = azurerm_resource_group.rg.location
   allocation_method   = "Static"
   tags                = local.eth_tags
-} */
+}
 
 # -----------------------------
 # NETWORK INTERFACES
@@ -129,11 +129,11 @@ resource "azurerm_network_interface" "validator" {
   tags = local.eth_tags
 }
 
-/* resource "azurerm_network_interface" "shared" {
+resource "azurerm_network_interface" "shared" {
   name                          = "nic-shared"
   location                      = azurerm_resource_group.rg.location
   resource_group_name           = azurerm_resource_group.rg.name
-  enable_accelerated_networking = true
+# enable_accelerated_networking = true
   internal_dns_name_label       = "shared"
   ip_configuration {
     name                          = "internal"
@@ -143,7 +143,7 @@ resource "azurerm_network_interface" "validator" {
   }
 
   tags = local.eth_tags
-} */
+}
 
 # ---------------------------------------------------------
 # MANAGED DISK
@@ -160,7 +160,7 @@ resource "azurerm_managed_disk" "validator" {
   tags = local.eth_tags
 }
 
-/* resource "azurerm_managed_disk" "shared" {
+resource "azurerm_managed_disk" "shared" {
   name                 = "md-shared"
   location             = azurerm_resource_group.rg.location
   resource_group_name  = azurerm_resource_group.rg.name
@@ -169,7 +169,7 @@ resource "azurerm_managed_disk" "validator" {
   disk_size_gb         = 32
 
   tags = local.eth_tags
-} */
+}
 
 # -----------------------------
 # VIRTUAL MACHINES
@@ -206,7 +206,7 @@ resource "azurerm_linux_virtual_machine" "validator" {
   tags = local.eth_tags
 }
 
-/* resource "azurerm_linux_virtual_machine" "shared" {
+resource "azurerm_linux_virtual_machine" "shared" {
   name                = "use3lsharedprod"
   resource_group_name = azurerm_resource_group.rg.name
   location            = azurerm_resource_group.rg.location
@@ -234,10 +234,10 @@ resource "azurerm_linux_virtual_machine" "validator" {
     version   = "latest"
   }
 
-  custom_data = data.cloudinit_config.default.rendered
+  custom_data = data.cloudinit_config.shared.rendered
 
   tags = local.eth_tags
-} */
+}
 
 # ------------------------------------
 # VIRTUAL MACHINE DATA DISK ATTACHMENT
@@ -250,12 +250,12 @@ resource "azurerm_virtual_machine_data_disk_attachment" "validator" {
   caching            = "ReadWrite"
 }
 
-/* resource "azurerm_virtual_machine_data_disk_attachment" "shared" {
+resource "azurerm_virtual_machine_data_disk_attachment" "shared" {
   managed_disk_id    = azurerm_managed_disk.shared.id
   virtual_machine_id = azurerm_linux_virtual_machine.shared.id
   lun                = 1
   caching            = "ReadWrite"
-} */
+}
 
 locals {
   nic_ids = azurerm_network_interface.validator.*.id

@@ -1,0 +1,78 @@
+# my global config
+rule_files:
+  - '/etc/prometheus/*.rules.yml'
+
+scrape_configs:
+  - job_name: 'nodes'
+    azure_sd_configs:
+    - subscription_id: 48fd0afc-a663-4ed6-b9c8-cb648e3dcb25
+      tenant_id: 3c7a9fb7-fd68-4ed3-b0c6-ff9dc05af75f
+      client_id: 7e1c9689-be3f-4bfd-87b4-603a11b7317c
+      client_secret: vlL7Q~h-JtA2fALqtODxKXLMy3lLpfV4tgdNv
+      port: 9100
+      
+  - job_name: 'prometheus'      
+    dns_sd_configs:
+    - names: ['tasks.prometheus']
+      type: A
+      port: 9090
+    relabel_configs:
+    - target_label: domain
+      replacement: monitoring
+    - source_labels: [__meta_dns_name, __address__]
+      target_label: instance
+      regex: tasks\.(.+);192\.168\.\d+\.(\d+):\d+
+      replacement: $1-$2
+    - source_labels: [__meta_dns_name]
+      target_label: service
+      regex: tasks\.(.+)
+      
+  - job_name: 'grafana'
+    dns_sd_configs:
+    - names: ['tasks.grafana']
+      type: A
+      port: 3000
+    relabel_configs:
+    - target_label: domain
+      replacement: monitoring
+    - source_labels: [__meta_dns_name, __address__]
+      target_label: instance
+      regex: tasks\.(.+);192\.168\.\d+\.(\d+):\d+
+      replacement: $1-$2
+    - source_labels: [__meta_dns_name]
+      target_label: service
+      regex: tasks\.(.+)
+
+  - job_name: 'alertmanager'
+    dns_sd_configs:
+    - names: ['tasks.alertmanager1', 'tasks.alertmanager2']
+      type: A
+      port: 9093
+    relabel_configs:
+    - target_label: domain
+      replacement: monitoring
+    - source_labels: [__meta_dns_name, __address__]
+      target_label: instance
+      regex: tasks\.(.+);192\.168\.\d+\.(\d+):\d+
+      replacement: $1-$2
+    - source_labels: [__meta_dns_name]
+      target_label: service
+      regex: tasks\.(.+)
+    
+  - job_name: 'postgres-exporter'
+    scrape_interval: 1m
+    scrape_timeout: 30s
+    dns_sd_configs:
+    - names: ['tasks.postgres-exporter']
+      type: A
+      port: 9187
+    relabel_configs:
+    - target_label: domain
+      replacement: monitoring
+    - source_labels: [__meta_dns_name, __address__]
+      target_label: instance
+      regex: tasks\.(.+);192\.168\.\d+\.(\d+):\d+
+      replacement: $1-$2 
+    - source_labels: [__meta_dns_name]
+      target_label: service
+      regex: tasks\.(.+)        

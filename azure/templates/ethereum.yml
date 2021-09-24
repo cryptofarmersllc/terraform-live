@@ -1,6 +1,6 @@
  #cloud-config
 runcmd:
- - mkdir -p /data/ethereum
+ - mkdir -p /data/ethereum /data/ethereum/logs /data/ethereum/wallet /data/ethereum/validatorDB
  - chmod -R o+wt /data/ethereum
 
 
