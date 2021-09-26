@@ -10,22 +10,22 @@ scrape_configs:
       client_id: 7e1c9689-be3f-4bfd-87b4-603a11b7317c
       client_secret: vlL7Q~h-JtA2fALqtODxKXLMy3lLpfV4tgdNv
       port: 9100
+    relabel_configs:
+    - source_labels: [__meta_azure_machine_name]
+      regex: use\dl(shared|validator)\d{0,3}prod
+      action: keep
+    - source_labels: [__meta_azure_machine_name]
+      target_label:  instance 
+    - source_labels: [__meta_azure_machine_name]
+      target_label:  node
+    - source_labels: [__meta_azure_machine_private_ip]
+      target_label:  private_ip      
       
   - job_name: 'prometheus'      
-    dns_sd_configs:
-    - names: ['tasks.prometheus']
-      type: A
-      port: 9090
-    relabel_configs:
-    - target_label: domain
-      replacement: monitoring
-    - source_labels: [__meta_dns_name, __address__]
-      target_label: instance
-      regex: tasks\.(.+);192\.168\.\d+\.(\d+):\d+
-      replacement: $1-$2
-    - source_labels: [__meta_dns_name]
-      target_label: service
-      regex: tasks\.(.+)
+    static_configs:
+    - targets: ['localhost:9090']
+      labels:
+        service: 'prometheus'
       
   - job_name: 'grafana'
     dns_sd_configs:
@@ -75,4 +75,18 @@ scrape_configs:
       replacement: $1-$2 
     - source_labels: [__meta_dns_name]
       target_label: service
-      regex: tasks\.(.+)        
+      regex: tasks\.(.+)
+
+  - job_name: 'beacon_chain_1'      
+    static_configs:
+    - targets: ['use2lvalidator001prod:8080']
+      labels:
+        service: 'beacon_chain'
+        instance: 'beacon_chain_1'              
+
+  - job_name: 'validator_node_1'      
+    static_configs:
+    - targets: ['use2lvalidator001prod:8081']
+      labels:
+        service: 'validator_node'
+        instance: 'validator_node_1'
