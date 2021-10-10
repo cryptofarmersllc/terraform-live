@@ -203,6 +203,10 @@ resource "azurerm_linux_virtual_machine" "validator" {
 
   custom_data = data.cloudinit_config.default.rendered
 
+  lifecycle {
+    ignore_changes = [custom_data]
+  }
+
   tags = local.eth_tags
 }
 
@@ -236,6 +240,10 @@ resource "azurerm_linux_virtual_machine" "shared" {
 
   custom_data = data.cloudinit_config.shared.rendered
 
+  lifecycle {
+    ignore_changes = [custom_data]
+  }
+
   tags = local.eth_tags
 }
 
@@ -248,6 +256,10 @@ resource "azurerm_virtual_machine_data_disk_attachment" "validator" {
   virtual_machine_id = azurerm_linux_virtual_machine.validator.*.id[count.index]
   lun                = 1
   caching            = "ReadWrite"
+
+  lifecycle {
+    prevent_destroy = true
+  }
 }
 
 resource "azurerm_virtual_machine_data_disk_attachment" "shared" {

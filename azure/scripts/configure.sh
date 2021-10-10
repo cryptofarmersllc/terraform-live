@@ -1,3 +1,8 @@
+#Generate key pairs
+wget https://github.com/ethereum/eth2.0-deposit-cli/releases/download/v1.2.0/eth2deposit-cli-256ea21-linux-amd64.tar.gz
+tar -xvzf eth2deposit-cli-256ea21-linux-amd64.tar.gz
+cd eth2deposit-cli-256ea21-linux-amd64
+
 # Run your beacon node
 docker run -d -h validator1.cryptofarmers.io -v /data/ethereum:/data -p 4000:4000 -p 8080:8080 -p 13000:13000 -p 12000:12000/udp \
   --name beacon-node --restart on-failure:3 --security-opt="no-new-privileges=true" \
