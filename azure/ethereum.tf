@@ -157,6 +157,10 @@ resource "azurerm_managed_disk" "validator" {
   create_option        = "Empty"
   disk_size_gb         = 128
 
+  lifecycle {
+    prevent_destroy = true
+  }
+
   tags = local.eth_tags
 }
 
@@ -167,6 +171,10 @@ resource "azurerm_managed_disk" "shared" {
   storage_account_type = "Premium_LRS"
   create_option        = "Empty"
   disk_size_gb         = 32
+
+  lifecycle {
+    prevent_destroy = true
+  }
 
   tags = local.eth_tags
 }
@@ -256,10 +264,6 @@ resource "azurerm_virtual_machine_data_disk_attachment" "validator" {
   virtual_machine_id = azurerm_linux_virtual_machine.validator.*.id[count.index]
   lun                = 1
   caching            = "ReadWrite"
-
-  lifecycle {
-    prevent_destroy = true
-  }
 }
 
 resource "azurerm_virtual_machine_data_disk_attachment" "shared" {
