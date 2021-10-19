@@ -6,7 +6,7 @@ cd eth2deposit-cli
 create secret.txt
 
 # Run your beacon node
-docker run -d -h validator2.cryptofarmers.io -v /data/ethereum/beacon:/data -v /data/ethereum/logs:/logs \
+docker run -d -h validator1.cryptofarmers.io -v /data/ethereum/beacon:/data -v /data/ethereum/logs:/logs \
   -p 4000:4000 -p 8080:8080 -p 13000:13000 -p 12000:12000/udp \
   --name beacon-node --restart on-failure:3 --security-opt="no-new-privileges=true" \
   gcr.io/prysmaticlabs/prysm/beacon-chain:v2.0.1 \
@@ -26,7 +26,7 @@ docker run -it -v $HOME/eth2deposit-cli/validator_keys:/keys \
   accounts import --keys-dir=/keys --wallet-dir=/wallet
 
   # Run your validator
-docker run -d -h validator2.cryptofarmers.io \
+docker run -d -h validator1.cryptofarmers.io \
   -v /data/ethereum/wallet:/wallet -v /data/ethereum/validatorDB:/validatorDB -v /data/ethereum/logs:/logs \
   --network="host" --restart on-failure:3 --security-opt="no-new-privileges=true" \
   --name validator gcr.io/prysmaticlabs/prysm/validator:v2.0.1 \
@@ -36,7 +36,7 @@ docker run -d -h validator2.cryptofarmers.io \
   --wallet-password-file=/wallet/secret.txt \
   --datadir=/validatorDB \
   --log-file=/logs/validator.log \
-  --graffiti="Crypto Farmers Node 2: Happy to attest for Hariharasuthan Radhakrishnan" \
+  --graffiti="Crypto Farmers Node 1" \
   --accept-terms-of-use
 
 #Rsync beacon node database
