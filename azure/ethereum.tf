@@ -8,7 +8,7 @@ resource "azurerm_subnet" "validator" {
   address_prefixes     = ["10.0.0.0/24"]
 }
 
- resource "azurerm_subnet" "shared" {
+resource "azurerm_subnet" "shared" {
   name                 = "shared-subnet"
   resource_group_name  = azurerm_resource_group.rg.name
   virtual_network_name = azurerm_virtual_network.vn.name
@@ -30,7 +30,7 @@ resource "azurerm_subnet_network_security_group_association" "validator" {
   network_security_group_id = azurerm_network_security_group.validator.id
 }
 
- resource "azurerm_network_security_group" "shared" {
+resource "azurerm_network_security_group" "shared" {
   name                = "nsg-shared"
   location            = azurerm_resource_group.rg.location
   resource_group_name = azurerm_resource_group.rg.name
@@ -40,7 +40,7 @@ resource "azurerm_subnet_network_security_group_association" "validator" {
 resource "azurerm_subnet_network_security_group_association" "shared" {
   subnet_id                 = azurerm_subnet.shared.id
   network_security_group_id = azurerm_network_security_group.shared.id
- }
+}
 
 # --------------------------------------------------
 # NETWORK SECURITY RULES
@@ -69,13 +69,13 @@ resource "azurerm_network_security_rule" "validatorInboundInternetUDPAllow" {
   source_address_prefix       = "Internet"
   source_port_range           = "*"
   destination_address_prefix  = "VirtualNetwork"
-  destination_port_range     = "12000"
+  destination_port_range      = "12000"
   resource_group_name         = azurerm_resource_group.rg.name
   network_security_group_name = azurerm_network_security_group.validator.name
 }
 
 # Allow ssh port access from Internet
- resource "azurerm_network_security_rule" "sharedInboundInternetAllow" {
+resource "azurerm_network_security_rule" "sharedInboundInternetAllow" {
   name                        = "IInternetA"
   priority                    = 1000
   direction                   = "Inbound"
@@ -84,7 +84,7 @@ resource "azurerm_network_security_rule" "validatorInboundInternetUDPAllow" {
   source_address_prefix       = "Internet"
   source_port_range           = "*"
   destination_address_prefix  = "VirtualNetwork"
-  destination_port_ranges      = ["80", "1122", "9090", "9092"]
+  destination_port_ranges     = ["80", "1122", "9090", "9092"]
   resource_group_name         = azurerm_resource_group.rg.name
   network_security_group_name = azurerm_network_security_group.shared.name
 }
@@ -130,11 +130,11 @@ resource "azurerm_network_interface" "validator" {
 }
 
 resource "azurerm_network_interface" "shared" {
-  name                          = "nic-shared"
-  location                      = azurerm_resource_group.rg.location
-  resource_group_name           = azurerm_resource_group.rg.name
-# enable_accelerated_networking = true
-  internal_dns_name_label       = "shared"
+  name                = "nic-shared"
+  location            = azurerm_resource_group.rg.location
+  resource_group_name = azurerm_resource_group.rg.name
+  # enable_accelerated_networking = true
+  internal_dns_name_label = "shared"
   ip_configuration {
     name                          = "internal"
     subnet_id                     = azurerm_subnet.shared.id
