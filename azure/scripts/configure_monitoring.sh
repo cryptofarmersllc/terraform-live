@@ -9,7 +9,8 @@ docker run -d -p 9090:9090 --name prometheus --restart on-failure:3 --security-o
   --config.file=/etc/prometheus/prometheus.yml \
   --web.console.libraries=/etc/prometheus/console_libraries \
   --web.console.templates=/etc/prometheus/consoles \
-  --web.external-url=http://status.cryptofarmers.io:9090
+  --web.external-url=http://status.cryptofarmers.io:9090 \
+  --storage.tsdb.retention.time=30d
 
 #Run Grafana
 docker run -d -p 80:3000 --name grafana --restart on-failure:3 --security-opt="no-new-privileges=true" \
