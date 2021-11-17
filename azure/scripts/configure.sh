@@ -23,7 +23,7 @@ cd eth2deposit-cli
 ./deposit existing-mnemonic --validator_start_index 2 --num_validators 2 --chain mainnet
 create secret.txt
 
-# Run your beacon node
+#Run your beacon node
 docker run -d -h validator5.cryptofarmers.io -v /data/ethereum/beacon:/data -v /data/ethereum/logs:/logs \
   -p 4000:4000 -p 8080:8080 -p 13000:13000 -p 12000:12000/udp \
   --name beacon-node --restart on-failure:3 --security-opt="no-new-privileges=true" \
@@ -36,14 +36,14 @@ docker run -d -h validator5.cryptofarmers.io -v /data/ethereum/beacon:/data -v /
   --log-file=/logs/beacon-node.log \
   --accept-terms-of-use
 
-# Import your validator accounts into Prysm
+#Import your validator accounts into Prysm
 docker run -it -v $HOME/eth2deposit-cli/validator_keys:/keys \
   -v /data/ethereum/wallet:/wallet \
   --name validator \
   gcr.io/prysmaticlabs/prysm/validator:v2.0.2 \
   accounts import --keys-dir=/keys --wallet-dir=/wallet
 
-  # Run your validator
+#Run your validator
 docker run -d -h validator5.cryptofarmers.io \
   -v /data/ethereum/wallet:/wallet -v /data/ethereum/validatorDB:/validatorDB -v /data/ethereum/logs:/logs \
   --network="host" --restart on-failure:3 --security-opt="no-new-privileges=true" \
@@ -56,5 +56,7 @@ docker run -d -h validator5.cryptofarmers.io \
   --log-file=/logs/validator.log \
   --graffiti="Crypto Farmers Node 5" \
   --accept-terms-of-use
+
+#Setup notification on beaconchain for the new node
 
 ------------------------------------
