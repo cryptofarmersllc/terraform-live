@@ -15,14 +15,6 @@ rsync --progress -avzhe "ssh -p 1122" use2lvalidator002prod:/data/ethereum/beaco
 rm -fr  ~/.ssh/id_rsa ~/.ssh/id_rsa.pub ~/.ssh/config
 
 ------------------------------------------------------------
-#Generate key pairs
-wget https://github.com/ethereum/eth2.0-deposit-cli/releases/download/v1.2.0/eth2deposit-cli-256ea21-linux-amd64.tar.gz
-tar -xvzf eth2deposit-cli-256ea21-linux-amd64.tar.gz
-mv eth2deposit-cli-256ea21-linux-amd64 eth2deposit-cli
-cd eth2deposit-cli
-./deposit existing-mnemonic --validator_start_index 2 --num_validators 2 --chain mainnet
-create secret.txt
-
 #Run your beacon node
 docker run -d -h validator5.cryptofarmers.io -v /data/ethereum/beacon:/data -v /data/ethereum/logs:/logs \
   -p 4000:4000 -p 8080:8080 -p 13000:13000 -p 12000:12000/udp \
@@ -35,6 +27,14 @@ docker run -d -h validator5.cryptofarmers.io -v /data/ethereum/beacon:/data -v /
   --fallback-web3provider=https://eth-mainnet.alchemyapi.io/v2/sCbtfxyKigCsKteX3M_pLT-KnboRLMcI \
   --log-file=/logs/beacon-node.log \
   --accept-terms-of-use
+
+#Generate key pairs
+wget https://github.com/ethereum/eth2.0-deposit-cli/releases/download/v1.2.0/eth2deposit-cli-256ea21-linux-amd64.tar.gz
+tar -xvzf eth2deposit-cli-256ea21-linux-amd64.tar.gz
+mv eth2deposit-cli-256ea21-linux-amd64 eth2deposit-cli
+cd eth2deposit-cli
+./deposit existing-mnemonic --validator_start_index 2 --num_validators 2 --chain mainnet
+create secret.txt
 
 #Import your validator accounts into Prysm
 docker run -it -v $HOME/eth2deposit-cli/validator_keys:/keys \
