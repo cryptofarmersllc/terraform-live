@@ -11,7 +11,7 @@ variable "location" {
 variable "nb_validators" {
   type        = number
   description = "Number of validators"
-  default     = 5
+  default     = 6
 }
 
 variable "admin_username" {
