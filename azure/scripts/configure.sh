@@ -16,10 +16,10 @@ rm -fr  ~/.ssh/id_rsa ~/.ssh/id_rsa.pub ~/.ssh/config
 
 ------------------------------------------------------------
 #Run your beacon node
-docker run -d -h validator6.cryptofarmers.io -v /data/ethereum/beacon:/data -v /data/ethereum/logs:/logs \
+docker run -d -v /data/ethereum/beacon:/data -v /data/ethereum/logs:/logs \
   -p 4000:4000 -p 8080:8080 -p 13000:13000 -p 12000:12000/udp \
   --name beacon-node --restart on-failure:3 --security-opt="no-new-privileges=true" \
-  gcr.io/prysmaticlabs/prysm/beacon-chain:v2.0.3 \
+  gcr.io/prysmaticlabs/prysm/beacon-chain:v2.0.4 \
   --datadir=/data \
   --rpc-host=0.0.0.0 \
   --monitoring-host=0.0.0.0 \
@@ -40,14 +40,13 @@ create secret.txt
 docker run -it -v $HOME/eth2deposit-cli/validator_keys:/keys \
   -v /data/ethereum/wallet:/wallet \
   --name validator \
-  gcr.io/prysmaticlabs/prysm/validator:v2.0.3 \
+  gcr.io/prysmaticlabs/prysm/validator:v2.0.4 \
   accounts import --keys-dir=/keys --wallet-dir=/wallet
 
 #Run your validator
-docker run -d -h validator6.cryptofarmers.io \
-  -v /data/ethereum/wallet:/wallet -v /data/ethereum/validatorDB:/validatorDB -v /data/ethereum/logs:/logs \
+docker run -d -v /data/ethereum/wallet:/wallet -v /data/ethereum/validatorDB:/validatorDB -v /data/ethereum/logs:/logs \
   --network="host" --restart on-failure:3 --security-opt="no-new-privileges=true" \
-  --name validator gcr.io/prysmaticlabs/prysm/validator:v2.0.3 \
+  --name validator gcr.io/prysmaticlabs/prysm/validator:v2.0.4 \
   --beacon-rpc-provider=127.0.0.1:4000 \
   --monitoring-host=0.0.0.0 \
   --wallet-dir=/wallet \
