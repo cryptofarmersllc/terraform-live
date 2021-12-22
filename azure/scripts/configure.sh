@@ -23,8 +23,8 @@ docker run -d -v /data/ethereum/beacon:/data -v /data/ethereum/logs:/logs \
   --datadir=/data \
   --rpc-host=0.0.0.0 \
   --monitoring-host=0.0.0.0 \
-  --http-web3provider=https://eth-mainnet.alchemyapi.io/v2/sCbtfxyKigCsKteX3M_pLT-KnboRLMcI \
-  --fallback-web3provider=https://mainnet.infura.io/v3/e688007f8726451192c518e37fe0cdda \
+  --http-web3provider=https://mainnet.infura.io/v3/e688007f8726451192c518e37fe0cdda \
+  --fallback-web3provider=https://eth-mainnet.alchemyapi.io/v2/sCbtfxyKigCsKteX3M_pLT-KnboRLMcI \
   --log-file=/logs/beacon-node.log \
   --accept-terms-of-use
 
