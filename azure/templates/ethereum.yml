@@ -1,6 +1,7 @@
  #cloud-config
 runcmd:
- - mkdir -p /data/ethereum/beacon /data/ethereum/logs /data/ethereum/wallet /data/ethereum/validatorDB
+ - mkdir -p /data/ethereum/node1/beacon /data/ethereum/node1/logs /data/ethereum/node1/wallet /data/ethereum/node1/validatorDB
+ - mkdir -p /data/ethereum/node2/beacon /data/ethereum/node2/logs /data/ethereum/node2/wallet /data/ethereum/node2/validatorDB
  - chmod -R o+wt /data/ethereum
 
 
