@@ -23,7 +23,7 @@ scrape_configs:
     - source_labels: [__meta_azure_machine_private_ip]
       target_label:  private_ip      
 
-  - job_name: 'swarm'
+  - job_name: 'docker'
     azure_sd_configs:
     - subscription_id: 48fd0afc-a663-4ed6-b9c8-cb648e3dcb25
       tenant_id: 3c7a9fb7-fd68-4ed3-b0c6-ff9dc05af75f
@@ -77,24 +77,6 @@ scrape_configs:
       target_label: instance
       regex: tasks\.(.+);192\.168\.\d+\.(\d+):\d+
       replacement: $1-$2
-    - source_labels: [__meta_dns_name]
-      target_label: service
-      regex: tasks\.(.+)
-    
-  - job_name: 'postgres-exporter'
-    scrape_interval: 1m
-    scrape_timeout: 30s
-    dns_sd_configs:
-    - names: ['tasks.postgres-exporter']
-      type: A
-      port: 9187
-    relabel_configs:
-    - target_label: domain
-      replacement: monitoring
-    - source_labels: [__meta_dns_name, __address__]
-      target_label: instance
-      regex: tasks\.(.+);192\.168\.\d+\.(\d+):\d+
-      replacement: $1-$2 
     - source_labels: [__meta_dns_name]
       target_label: service
       regex: tasks\.(.+)
