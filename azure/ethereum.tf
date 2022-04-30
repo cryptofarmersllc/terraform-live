@@ -55,7 +55,7 @@ resource "azurerm_network_security_rule" "validatorInboundInternetAllow" {
   source_address_prefix       = "Internet"
   source_port_range           = "*"
   destination_address_prefix  = "VirtualNetwork"
-  destination_port_ranges     = ["1122", "4000", "13000", "13002"]
+  destination_port_ranges     = ["1122", "13000", "13002"]
   resource_group_name         = azurerm_resource_group.rg.name
   network_security_group_name = azurerm_network_security_group.validator.name
 }
@@ -155,7 +155,7 @@ resource "azurerm_managed_disk" "validator" {
   resource_group_name  = azurerm_resource_group.rg.name
   storage_account_type = "Premium_LRS"
   create_option        = "Empty"
-  disk_size_gb         = 128
+  disk_size_gb         = 256
 
   lifecycle {
     prevent_destroy = true

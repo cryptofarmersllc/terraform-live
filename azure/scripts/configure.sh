@@ -1,6 +1,6 @@
 #Rsync beacon node database
 #Copy private key to destination node
-scp ~/.ssh/id_rsa ~/.ssh/id_rsa.pub ~/.ssh/config validator2.cryptofarmers.io:/home/groot/.ssh/
+scp ~/.ssh/id_rsa ~/.ssh/id_rsa.pub ~/.ssh/config validator3.cryptofarmers.io:/home/groot/.ssh/
 #verify ssh connection is established from destination to source node
 ssh use2lvalidator001prod -p 1122
 exit
@@ -80,7 +80,7 @@ docker run -d -v /data/ethereum/node1/wallet:/wallet -v /data/ethereum/node1/val
   --wallet-password-file=/wallet/secret.txt \
   --datadir=/validatorDB \
   --log-file=/logs/validator.log \
-  --graffiti="Crypto Farmers Node 4" \
+  --graffiti="Crypto Farmers Node 1" \
   --accept-terms-of-use
 
 #Node 2
@@ -94,7 +94,7 @@ docker run -d -v /data/ethereum/node2/wallet:/wallet -v /data/ethereum/node2/val
   --wallet-password-file=/wallet/secret.txt \
   --datadir=/validatorDB \
   --log-file=/logs/validator.log \
-  --graffiti="Crypto Farmers Node 8" \
+  --graffiti="Crypto Farmers Node 5" \
   --accept-terms-of-use
 
 #Setup notification on beaconchain for the new node
