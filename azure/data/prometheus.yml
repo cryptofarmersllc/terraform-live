@@ -8,16 +8,16 @@ scrape_configs:
     - subscription_id: 48fd0afc-a663-4ed6-b9c8-cb648e3dcb25
       tenant_id: 3c7a9fb7-fd68-4ed3-b0c6-ff9dc05af75f
       client_id: 7e1c9689-be3f-4bfd-87b4-603a11b7317c
-      client_secret: vlL7Q~h-JtA2fALqtODxKXLMy3lLpfV4tgdNv
+      client_secret: z6a8Q~Mot5I5Z6vErcEwdGm8kOWzuTCkLq~xIbWI
       port: 9100
     relabel_configs:
     - source_labels: [__meta_azure_machine_name]
-      regex: use\dl(shared|validator)\d{0,3}prod
+      regex: use\dl(shared|validator|executor)\d{0,3}prod
       action: keep
     - source_labels: [__meta_azure_machine_name]
       target_label:  instance 
     - source_labels: [__meta_azure_machine_name]
-      regex: use\dl(shared|validator)(\d{0,3})prod
+      regex: use\dl(shared|validator|executor)(\d{0,3})prod
       replacement: $1$2
       target_label:  node
     - source_labels: [__meta_azure_machine_private_ip]
@@ -28,16 +28,16 @@ scrape_configs:
     - subscription_id: 48fd0afc-a663-4ed6-b9c8-cb648e3dcb25
       tenant_id: 3c7a9fb7-fd68-4ed3-b0c6-ff9dc05af75f
       client_id: 7e1c9689-be3f-4bfd-87b4-603a11b7317c
-      client_secret: vlL7Q~h-JtA2fALqtODxKXLMy3lLpfV4tgdNv
+      client_secret: z6a8Q~Mot5I5Z6vErcEwdGm8kOWzuTCkLq~xIbWI
       port: 9323
     relabel_configs:
     - source_labels: [__meta_azure_machine_name]
-      regex: use\dl(shared|validator)\d{0,3}prod
+      regex: use\dl(shared|validator|executor)\d{0,3}prod
       action: keep
     - source_labels: [__meta_azure_machine_name]
       target_label:  instance 
     - source_labels: [__meta_azure_machine_name]
-      regex: use\dl(shared|validator)(\d{0,3})prod
+      regex: use\dl(shared|validator|executor)(\d{0,3})prod
       replacement: $1$2
       target_label:  node
     - source_labels: [__meta_azure_machine_private_ip]

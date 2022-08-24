@@ -14,6 +14,12 @@ variable "nb_validators" {
   default     = 4
 }
 
+variable "nb_executors" {
+  type        = number
+  description = "Number of executors"
+  default     = 1
+}
+
 variable "admin_username" {
   description = "Administrator username for any OS"
   type        = string
