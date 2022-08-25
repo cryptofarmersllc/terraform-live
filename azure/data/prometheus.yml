@@ -94,3 +94,11 @@ scrape_configs:
       labels:
         service: 'validator_node'
         instance: 'validator_node_1'
+
+  - job_name: 'executor_node_1'
+  - metrics_path: /debug/metrics/prometheus
+    static_configs:
+    - targets: ['use2lexecutor001prod:6060']
+      labels:
+        service: 'executor_node'
+        instance: 'executor_node_1'        
