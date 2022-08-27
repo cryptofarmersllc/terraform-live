@@ -19,6 +19,6 @@ docker run -d --name executor-node \
   --metrics.addr 0.0.0.0
 
 
-#Setup notification on beaconchain for the new node
+#Prune Geth
 
 ------------------------------------

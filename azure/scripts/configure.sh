@@ -103,6 +103,8 @@ docker run -d -v /data/ethereum/node2/wallet:/wallet -v /data/ethereum/node2/val
   --accept-terms-of-use \
   --suggested-fee-recipient=0xa63Ce14Bc241812e3081A74b0b999b0D2bF0657F
 
+#Run mev-boost per node
+docker run -p 18550:18550 flashbots/mev-boost:latest -mainnet -relay-check -relays https://0xafa4c6985aa049fb79dd37010438cfebeb0f2bd42b115b89dd678dab0670c1de38da0c4e9138c9290a398ecd9a0b3110@builder-relay-goerli.flashbots.net
 #Setup notification on beaconchain for the new node
 
 ------------------------------------

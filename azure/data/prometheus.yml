@@ -95,10 +95,14 @@ scrape_configs:
         service: 'validator_node'
         instance: 'validator_node_1'
 
-  - job_name: 'executor_node_1'
-  - metrics_path: /debug/metrics/prometheus
+  - job_name: 'executor_nodes'
+    metrics_path: /debug/metrics/prometheus
     static_configs:
-    - targets: ['use2lexecutor001prod:6060']
-      labels:
-        service: 'executor_node'
-        instance: 'executor_node_1'        
+    - targets: ['use2lexecutor001prod:6060', 'use2lexecutor002prod:6060']
+    relabel_configs:
+    - target_label: service
+      replacement: executor_node
+    - source_labels: [__address__]
+      target_label: instance
+      regex: use2l(.+)00(\d)prod:6060
+      replacement: $1-$2
