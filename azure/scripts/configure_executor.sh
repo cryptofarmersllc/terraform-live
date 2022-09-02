@@ -16,9 +16,14 @@ docker run -d --name executor-node \
   --http.api eth,net,engine,admin \
   --cache 4096 \
   --metrics \
-  --metrics.addr 0.0.0.0
+  --metrics.addr 0.0.0.0 \
+  --snapshot=false
 
 
 #Prune Geth
-
+docker run -d --name prune-geth \
+  -v /data/ethereum/data:/root/.ethereum \
+  ethereum/client-go:v1.10.23 \
+  snapshot prune-state \
+  --mainnet
 ------------------------------------
