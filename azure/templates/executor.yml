@@ -1,4 +1,0 @@
- #cloud-config
-runcmd:
- - mkdir -p /data/ethereum/data /data/ethereum/logs /data/ethereum/config
- - chmod -R o+wt /data/ethereum

@@ -22,19 +22,17 @@ docker run -d --name prune-geth \
   --mainnet
 
 #Run your beacon node
-docker run -d -v /data/ethereum/node1/beacon:/data -v /data/ethereum/node1/logs:/logs \
-  -p 4000:4000 -p 8080:8080 -p 13000:13000 -p 12000:12000/udp \
+docker run -d -v /data/ethereum/beacon:/data -v /data/ethereum/logs:/logs -v /data/ethereum/config:/config \
   --network="host" --name beacon-node-1 --restart on-failure:3 --security-opt="no-new-privileges=true" \
   gcr.io/prysmaticlabs/prysm/beacon-chain:v3.0.0 \
   --datadir=/data \
   --rpc-host=0.0.0.0 \
   --monitoring-host=0.0.0.0 \
   --execution-endpoint=http://localhost:8551 \
-  --jwt-secret=/data/executor1-jwt.hex \
+  --jwt-secret=/config/jwt.hex \
   --log-file=/logs/beacon-node.log \
   --accept-terms-of-use \
-  --suggested-fee-recipient=0xa63Ce14Bc241812e3081A74b0b999b0D2bF0657F \
-  --verbosity debug
+  --suggested-fee-recipient=0xa63Ce14Bc241812e3081A74b0b999b0D2bF0657F
 
 #Generate key pairs
 wget https://github.com/ethereum/staking-deposit-cli/releases/download/v2.1.0/staking_deposit-cli-ce8cbb6-linux-amd64.tar.gz
@@ -71,7 +69,7 @@ docker run -it --rm --network="host" \
   --list-validator-indices --beacon-rpc-provider=127.0.0.1:4000
 
 #Run your validator
-docker run -d -v /data/ethereum/node1/wallet:/wallet -v /data/ethereum/node1/validatorDB:/validatorDB -v /data/ethereum/node1/logs:/logs \
+docker run -d -v /data/ethereum/wallet:/wallet -v /data/ethereum/validatorDB:/validatorDB -v /data/ethereum/logs:/logs \
   --network="host" --restart on-failure:3 --security-opt="no-new-privileges=true" \
   --name validator-1 gcr.io/prysmaticlabs/prysm/validator:v3.0.0 \
   --beacon-rpc-provider=localhost:4000 \

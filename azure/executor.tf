@@ -136,7 +136,7 @@ resource "azurerm_linux_virtual_machine" "executor" {
     version   = "latest"
   }
 
-  custom_data = data.cloudinit_config.executor.rendered
+  custom_data = data.cloudinit_config.default.rendered
 
   lifecycle {
     ignore_changes = [custom_data]
