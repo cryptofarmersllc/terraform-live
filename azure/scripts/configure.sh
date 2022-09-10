@@ -8,7 +8,7 @@ exit
 cd /data/ethereum/node1/beacon
 mkdir beaconchaindata
 cd beaconchaindata
-rsync --progress -avzhe "ssh -p 1122" use2lvalidator002prod:/data/ethereum/node1/beacon/beaconchaindata/beaconchain.db .
+rsync --progress -avzhe "ssh -p 1122" use2lvalidator001prod:/data/ethereum/node1/beacon/beaconchaindata/beaconchain.db .
 #Rsync beacon node database from source to destination node while source beacon node is stopped
 rsync --progress -avzhe "ssh -p 1122" use2lvalidator002prod:/data/ethereum/node1/beacon/beaconchaindata/beaconchain.db .
 #Remove private keys from destination node
@@ -24,11 +24,10 @@ docker run -d -v /data/ethereum/node1/beacon:/data -v /data/ethereum/node1/logs:
   --datadir=/data \
   --rpc-host=0.0.0.0 \
   --monitoring-host=0.0.0.0 \
-  --http-web3provider=https://mainnet.infura.io/v3/e688007f8726451192c518e37fe0cdda \
-  --fallback-web3provider=https://eth-mainnet.alchemyapi.io/v2/sCbtfxyKigCsKteX3M_pLT-KnboRLMcI \
+  --execution-endpoint=http://use2lexecutor001prod:8551 \
+  --jwt-secret=/data/executor1-jwt.hex \
   --log-file=/logs/beacon-node.log \
   --accept-terms-of-use \
-  --p2p-max-peers 23 \
   --suggested-fee-recipient=0xa63Ce14Bc241812e3081A74b0b999b0D2bF0657F
 
 #Node 2
@@ -39,8 +38,8 @@ docker run -d -v /data/ethereum/node2/beacon:/data -v /data/ethereum/node2/logs:
   --datadir=/data \
   --rpc-host=0.0.0.0 \
   --monitoring-host=0.0.0.0 \
-  --http-web3provider=https://eth-mainnet.alchemyapi.io/v2/sCbtfxyKigCsKteX3M_pLT-KnboRLMcI \
-  --fallback-web3provider=https://mainnet.infura.io/v3/e688007f8726451192c518e37fe0cdda \
+  --execution-endpoint=http://use2lexecutor002prod:8551 \
+  --jwt-secret=/data/executor2-jwt.hex \
   --log-file=/logs/beacon-node.log \
   --accept-terms-of-use \
   --monitoring-port=8082 \
@@ -60,18 +59,29 @@ create secret.txt
 
 #Import your validator accounts into Prysm
 #Node 1
-docker run -it -v $HOME/staking_deposit-cli/validator_keys:/keys \
-  -v /data/ethereum/node1/wallet:/wallet \
-  --name validator-1 \
+docker run -it --rm \
+  -v $HOME/staking_deposit-cli/validator_keys:/keys -v /data/ethereum/node1/wallet:/wallet \
   gcr.io/prysmaticlabs/prysm/validator:v3.0.0 \
-  accounts import --keys-dir=/keys --wallet-dir=/wallet
+  accounts import --accept-terms-of-use \
+  --keys-dir=/keys --account-password-file=/wallet/secret.txt \
+  --wallet-dir=/wallet --wallet-password-file=/wallet/secret.txt
+   
 
-#Node 2
-docker run -it -v $HOME/staking_deposit-cli/validator_keys:/keys \
-  -v /data/ethereum/node2/wallet:/wallet \
-  --name validator-2 \
+#List accounts
+docker run -it --rm \
+  -v /data/ethereum/node1/wallet:/wallet \
   gcr.io/prysmaticlabs/prysm/validator:v3.0.0 \
-  accounts import --keys-dir=/keys --wallet-dir=/wallet  
+  accounts list --accept-terms-of-use --show-private-keys \
+  --wallet-dir=/wallet --wallet-password-file=/wallet/secret.txt
+  
+
+#List validator indices
+docker run -it --rm --network="host" \
+  -v /data/ethereum/node1/wallet:/wallet \
+  gcr.io/prysmaticlabs/prysm/validator:v3.0.0 \
+  accounts list --accept-terms-of-use \
+  --wallet-dir=/wallet --wallet-password-file=/wallet/secret.txt \
+  --list-validator-indices --beacon-rpc-provider=127.0.0.1:4000
 
 #Run your validator
 #Node 1

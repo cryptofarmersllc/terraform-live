@@ -14,7 +14,6 @@ docker run -d --name executor-node \
   --authrpc.jwtsecret=/root/config/jwt.hex \
   --http \
   --http.api eth,net,engine,admin \
-  --cache 4096 \
   --metrics \
   --metrics.addr 0.0.0.0 \
   --snapshot=false
