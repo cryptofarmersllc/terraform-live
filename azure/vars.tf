@@ -17,7 +17,7 @@ variable "nb_validators" {
 variable "nb_executors" {
   type        = number
   description = "Number of executors"
-  default     = 2
+  default     = 1
 }
 
 variable "admin_username" {

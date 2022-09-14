@@ -99,9 +99,9 @@ resource "azurerm_managed_disk" "executor" {
   create_option        = "Empty"
   disk_size_gb         = 2048
 
-  lifecycle {
+  /* lifecycle {
     prevent_destroy = true
-  }
+  } */
 
   tags = local.eth_tags
 }
