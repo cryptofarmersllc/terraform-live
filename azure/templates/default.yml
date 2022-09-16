@@ -63,6 +63,7 @@ packages:
  - zsh
  - tcptraceroute
  - net-tools
+ - jq
 package_upgrade: true
 package_reboot_if_required: true
 

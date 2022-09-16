@@ -20,7 +20,10 @@ docker run -d --name prune-geth \
   ethereum/client-go:v1.10.23 \
   snapshot prune-state \
   --mainnet
+#Geth attach
+dki -v /data/ethereum/execution:/root/.ethereum ethereum/client-go:v1.10.23 attach
 
+----------------------------------------------------------------------------------------------------------------
 #Run your beacon node
 docker run -d -v /data/ethereum/beacon:/data -v /data/ethereum/logs:/logs -v /data/ethereum/config:/config \
   --network="host" --name beacon-node-1 --restart on-failure:3 --security-opt="no-new-privileges=true" \
@@ -85,7 +88,7 @@ docker run -d -v /data/ethereum/wallet:/wallet -v /data/ethereum/validatorDB:/va
 
 #Run mev-boost per node
 docker run -d --network="host" --restart on-failure:3 --security-opt="no-new-privileges=true" \
---name mev-boost flashbots/mev-boost:latest \
+--name mev-boost flashbots/mev-boost:v1.3.0 \
 -mainnet \
 -relay-check -relays https://0xac6e77dfe25ecd6110b8e780608cce0dab71fdd5ebea22a16c0205200f2f8e2e3ad3b71d3499c54ad14d6c21b41a37ae@boost-relay.flashbots.net
 #Setup notification on beaconchain for the new node
