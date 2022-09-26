@@ -4,7 +4,7 @@ docker run -d --name executor-node \
   -v /data/ethereum/execution:/root/.ethereum -v /data/ethereum/config:/root/config \
   -p 6060:6060 -p 8551:8551 -p 30303:30303/tcp -p 30303:30303/udp \
   --restart on-failure:3 --security-opt="no-new-privileges=true" \
-  ethereum/client-go:v1.10.23 \
+  ethereum/client-go:v1.10.25 \
   --mainnet \
   --authrpc.addr 0.0.0.0 \
   --authrpc.jwtsecret=/root/config/jwt.hex \
@@ -17,11 +17,16 @@ docker run -d --name executor-node \
 #Prune Geth
 docker run -d --name prune-geth \
   -v /data/ethereum/data:/root/.ethereum \
-  ethereum/client-go:v1.10.23 \
+  ethereum/client-go:v1.10.25 \
   snapshot prune-state \
   --mainnet
 #Geth attach
-dki -v /data/ethereum/execution:/root/.ethereum ethereum/client-go:v1.10.23 attach
+dki -v /data/ethereum/execution:/root/.ethereum ethereum/client-go:v1.10.25 attach
+
+#How to rewind blockchain head
+#1. Attach to Geth
+#2. Convert block number to hex
+#3. Issue command debug.setHead("0xECAA1A")
 
 ----------------------------------------------------------------------------------------------------------------
 #Run your beacon node
@@ -88,7 +93,7 @@ docker run -d -v /data/ethereum/wallet:/wallet -v /data/ethereum/validatorDB:/va
 
 #Run mev-boost per node
 docker run -d --network="host" --restart on-failure:3 --security-opt="no-new-privileges=true" \
---name mev-boost flashbots/mev-boost:v1.3.0 \
+--name mev-boost flashbots/mev-boost:v1.3.1 \
 -mainnet \
 -relay-check -relays https://0xac6e77dfe25ecd6110b8e780608cce0dab71fdd5ebea22a16c0205200f2f8e2e3ad3b71d3499c54ad14d6c21b41a37ae@boost-relay.flashbots.net
 #Setup notification on beaconchain for the new node
