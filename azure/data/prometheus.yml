@@ -83,14 +83,14 @@ scrape_configs:
 
   - job_name: 'beacon_chain_1'      
     static_configs:
-    - targets: ['use2lvalidator001prod:8080']
+    - targets: ['use2lexecutor001prod:8080']
       labels:
         service: 'beacon_chain'
         instance: 'beacon_chain_1'              
 
   - job_name: 'validator_node_1'      
     static_configs:
-    - targets: ['use2lvalidator001prod:8081']
+    - targets: ['use2lexecutor001prod:8081']
       labels:
         service: 'validator_node'
         instance: 'validator_node_1'
@@ -98,7 +98,7 @@ scrape_configs:
   - job_name: 'executor_nodes'
     metrics_path: /debug/metrics/prometheus
     static_configs:
-    - targets: ['use2lexecutor001prod:6060', 'use2lexecutor002prod:6060']
+    - targets: ['use2lexecutor001prod:6060']
     relabel_configs:
     - target_label: service
       replacement: executor_node
