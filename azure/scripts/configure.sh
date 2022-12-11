@@ -21,7 +21,11 @@ docker run -d --name prune-geth \
   snapshot prune-state \
   --mainnet
 #Geth attach
-dki -v /data/ethereum/execution:/root/.ethereum ethereum/client-go:v1.10.25 attach
+dki -v /data/ethereum/execution:/root/.ethereum ethereum/client-go:v1.10.26 attach
+
+#Geth removedb
+dki -v /data/ethereum/execution:/root/.ethereum -v /data/ethereum/config:/root/config ethereum/client-go:v1.10.26 removedb
+Yes to remove db, no to remove ancient db
 
 #How to rewind blockchain head
 #1. Attach to Geth
@@ -93,7 +97,7 @@ docker run -d -v /data/ethereum/wallet:/wallet -v /data/ethereum/validatorDB:/va
 
 #Run mev-boost per node
 docker run -d --network="host" --restart on-failure:3 --security-opt="no-new-privileges=true" \
---name mev-boost flashbots/mev-boost:v1.3.2 \
+--name mev-boost flashbots/mev-boost:v1.4.0 \
 -mainnet \
 -relay-check -relays https://0xac6e77dfe25ecd6110b8e780608cce0dab71fdd5ebea22a16c0205200f2f8e2e3ad3b71d3499c54ad14d6c21b41a37ae@boost-relay.flashbots.net
 #Setup notification on beaconchain for the new node
