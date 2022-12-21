@@ -47,4 +47,7 @@ locals {
   eth_tags = {
     crypto = "ethereum"
   }
+  defichain_tags = {
+    crypto = "defichain"
+  }
 }

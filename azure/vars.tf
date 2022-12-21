@@ -8,9 +8,9 @@ variable "location" {
   default     = "East US 2"
 }
 
-variable "nb_validators" {
+variable "nb_defichains" {
   type        = number
-  description = "Number of validators"
+  description = "Number of Defichain nodes"
   default     = 1
 }
 

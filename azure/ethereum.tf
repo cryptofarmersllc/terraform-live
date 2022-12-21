@@ -50,7 +50,7 @@ resource "azurerm_network_security_rule" "executorInboundInternetUDPAllow" {
   source_address_prefix       = "Internet"
   source_port_range           = "*"
   destination_address_prefix  = "VirtualNetwork"
-  destination_port_ranges      = ["12000", "30303"]
+  destination_port_ranges     = ["12000", "30303"]
   resource_group_name         = azurerm_resource_group.rg.name
   network_security_group_name = azurerm_network_security_group.executor.name
 }
@@ -99,9 +99,9 @@ resource "azurerm_managed_disk" "executor" {
   create_option        = "Empty"
   disk_size_gb         = 2048
 
-  /* lifecycle {
+  lifecycle {
     prevent_destroy = true
-  } */
+  }
 
   tags = local.eth_tags
 }

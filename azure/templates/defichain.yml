@@ -1,0 +1,6 @@
+ #cloud-config
+runcmd:
+ - mkdir -p /data/defichain
+ - chmod -R o+wt /data/defichain
+
+

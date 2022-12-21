@@ -60,3 +60,22 @@ data "cloudinit_config" "shared" {
     merge_type   = "list(append)+dict(recurse_array)+str()"
   }
 }
+
+data "cloudinit_config" "defichain" {
+
+  part {
+    content_type = "text/cloud-config"
+    content      = file("${path.module}/templates/default.yml")
+    merge_type   = "list(append)+dict(recurse_array)+str()"
+  }
+  part {
+    content_type = "text/cloud-config"
+    content      = templatefile("${path.module}/templates/docker.tpl", { keep_disk = var.keep_disk })
+    merge_type   = "list(append)+dict(recurse_array)+str()"
+  }
+  part {
+    content_type = "text/cloud-config"
+    content      = file("${path.module}/templates/defichain.yml")
+    merge_type   = "list(append)+dict(recurse_array)+str()"
+  }
+}
