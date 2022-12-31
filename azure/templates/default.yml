@@ -54,6 +54,7 @@ write_files:
        echo "alias dps='docker ps'" >> ~/.zshrc
        echo "alias drm='docker rm -fv'" >> ~/.zshrc
        echo "alias dlf='docker logs -f'" >> ~/.zshrc
+       echo "alias defi='dke master-node /home/defichain/.defi/defi-cli -datadir=/home/defichain/data'" >> ~/.zshrc
        echo 'export SHELL=`which zsh`' >> ~/.bash_profile
        echo '[ -z "$ZSH_VERSION" ] && exec "$SHELL" -l' >> ~/.bash_profile
 

@@ -2,7 +2,7 @@ FROM debian:stable-slim
 
 ENV USER=defichain \
     HOME=/home/defichain \
-    VERSION=3.1.1
+    VERSION=3.2.0
 
 RUN apt-get update \
     && apt-get full-upgrade \

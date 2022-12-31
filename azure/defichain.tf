@@ -61,7 +61,7 @@ resource "azurerm_network_interface" "defichain" {
   name                          = format("nic-defichain%03d", count.index + 1)
   location                      = azurerm_resource_group.rg.location
   resource_group_name           = azurerm_resource_group.rg.name
-  enable_accelerated_networking = true
+ # enable_accelerated_networking = true
   internal_dns_name_label       = format("defichain%03d", count.index + 1)
   ip_configuration {
     name                          = "internal"
@@ -100,7 +100,7 @@ resource "azurerm_linux_virtual_machine" "defichain" {
   name                  = format("use2ldefichain%03dprod", count.index + 1)
   resource_group_name   = azurerm_resource_group.rg.name
   location              = azurerm_resource_group.rg.location
-  size                  = "Standard_E2s_v5"
+  size                  = "Standard_B2ms"
   admin_username        = var.admin_username
   network_interface_ids = [local.nic_defichain_ids[count.index]]
 
