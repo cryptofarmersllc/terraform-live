@@ -14,3 +14,6 @@ dke master-node /home/defichain/.defi/defi-cli -datadir=/home/defichain/data -ge
 
 #Send DFI
 dke master-node /home/defichain/.defi/defi-cli -datadir=/home/defichain/data sendtoaddress <address> <amount>
+
+#Update Masternode
+dke master-node /home/defichain/.defi/defi-cli -datadir=/home/defichain/data updatemasternode a774893c3df67805ac39a16915ab514c35a9bf9ee9b4886f51cbc1c7fac7a039 {"rewardAddress":"df1qlj9sz7zxhv672f57gusu2ypsqcd3vnaxej8u0f"}
