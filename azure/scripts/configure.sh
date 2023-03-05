@@ -4,7 +4,7 @@ docker run -d --name executor-node \
   -v /data/ethereum/execution:/root/.ethereum -v /data/ethereum/config:/root/config \
   -p 6060:6060 -p 8551:8551 -p 30303:30303/tcp -p 30303:30303/udp \
   --restart on-failure:3 --security-opt="no-new-privileges=true" \
-  ethereum/client-go:v1.10.26 \
+  ethereum/client-go:v1.11.2 \
   --mainnet \
   --authrpc.addr 0.0.0.0 \
   --authrpc.jwtsecret=/root/config/jwt.hex \
@@ -12,19 +12,21 @@ docker run -d --name executor-node \
   --http.api eth,net,engine,admin \
   --metrics \
   --metrics.addr 0.0.0.0 \
-  --snapshot=false
+  # --snapshot=false
+  # --db.engine=pebble
+  
 
 #Prune Geth
 docker run -d --name prune-geth \
   -v /data/ethereum/data:/root/.ethereum \
-  ethereum/client-go:v1.10.25 \
+  ethereum/client-go:v1.11.2 \
   snapshot prune-state \
   --mainnet
 #Geth attach
-dki -v /data/ethereum/execution:/root/.ethereum ethereum/client-go:v1.10.26 attach
+dki -v /data/ethereum/execution:/root/.ethereum ethereum/client-go:v1.11.2 attach
 
 #Geth removedb
-dki -v /data/ethereum/execution:/root/.ethereum -v /data/ethereum/config:/root/config ethereum/client-go:v1.10.26 removedb
+dki -v /data/ethereum/execution:/root/.ethereum -v /data/ethereum/config:/root/config ethereum/client-go:v1.11.2 removedb
 Yes to remove db, no to remove ancient db
 
 #How to rewind blockchain head
