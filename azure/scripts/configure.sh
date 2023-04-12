@@ -4,7 +4,7 @@ docker run -d --name executor-node \
   -v /data/ethereum/execution:/root/.ethereum -v /data/ethereum/config:/root/config \
   -p 6060:6060 -p 8551:8551 -p 30303:30303/tcp -p 30303:30303/udp \
   --restart on-failure:3 --security-opt="no-new-privileges=true" \
-  ethereum/client-go:v1.11.4 \
+  ethereum/client-go:v1.11.5 \
   --mainnet \
   --authrpc.addr 0.0.0.0 \
   --authrpc.jwtsecret=/root/config/jwt.hex \
@@ -19,14 +19,14 @@ docker run -d --name executor-node \
 #Prune Geth
 docker run -d --name prune-geth \
   -v /data/ethereum/data:/root/.ethereum \
-  ethereum/client-go:v1.11.4 \
+  ethereum/client-go:v1.11.5 \
   snapshot prune-state \
   --mainnet
 #Geth attach
-dki -v /data/ethereum/execution:/root/.ethereum ethereum/client-go:v1.11.4 attach
+dki -v /data/ethereum/execution:/root/.ethereum ethereum/client-go:v1.11.5 attach
 
 #Geth removedb
-dki -v /data/ethereum/execution:/root/.ethereum -v /data/ethereum/config:/root/config ethereum/client-go:v1.11.4 removedb
+dki -v /data/ethereum/execution:/root/.ethereum -v /data/ethereum/config:/root/config ethereum/client-go:v1.11.5 removedb
 Yes to remove db, no to remove ancient db
 
 #How to rewind blockchain head
@@ -47,7 +47,7 @@ docker run -d -v /data/ethereum/beacon:/data -v /data/ethereum/logs:/logs -v /da
   --log-file=/logs/beacon-node.log \
   --accept-terms-of-use \
   --suggested-fee-recipient=0xa63Ce14Bc241812e3081A74b0b999b0D2bF0657F \
-#  --http-mev-relay=http://localhost:18550
+  --http-mev-relay=http://localhost:18550
 
 #Generate key pairs
 wget https://github.com/ethereum/staking-deposit-cli/releases/download/v2.1.0/staking_deposit-cli-ce8cbb6-linux-amd64.tar.gz
@@ -96,7 +96,7 @@ docker run -d -v /data/ethereum/wallet:/wallet -v /data/ethereum/validatorDB:/va
   --graffiti="Crypto Farmers" \
   --accept-terms-of-use \
   --suggested-fee-recipient=0xa63Ce14Bc241812e3081A74b0b999b0D2bF0657F \
-#  --enable-builder=true
+  --enable-builder=true
 
 #Run mev-boost per node
 docker run -d --network="host" --restart on-failure:3 --security-opt="no-new-privileges=true" \
