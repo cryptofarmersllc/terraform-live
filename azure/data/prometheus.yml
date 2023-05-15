@@ -12,12 +12,12 @@ scrape_configs:
       port: 9100
     relabel_configs:
     - source_labels: [__meta_azure_machine_name]
-      regex: use\dl(shared|validator|executor)\d{0,3}prod
+      regex: use\dl(shared|defichain|executor)\d{0,3}prod
       action: keep
     - source_labels: [__meta_azure_machine_name]
       target_label:  instance 
     - source_labels: [__meta_azure_machine_name]
-      regex: use\dl(shared|validator|executor)(\d{0,3})prod
+      regex: use\dl(shared|defichain|executor)(\d{0,3})prod
       replacement: $1$2
       target_label:  node
     - source_labels: [__meta_azure_machine_private_ip]
@@ -32,12 +32,12 @@ scrape_configs:
       port: 9323
     relabel_configs:
     - source_labels: [__meta_azure_machine_name]
-      regex: use\dl(shared|validator|executor)\d{0,3}prod
+      regex: use\dl(shared|defichain|executor)\d{0,3}prod
       action: keep
     - source_labels: [__meta_azure_machine_name]
       target_label:  instance 
     - source_labels: [__meta_azure_machine_name]
-      regex: use\dl(shared|validator|executor)(\d{0,3})prod
+      regex: use\dl(shared|defichain|executor)(\d{0,3})prod
       replacement: $1$2
       target_label:  node
     - source_labels: [__meta_azure_machine_private_ip]
