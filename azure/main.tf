@@ -50,4 +50,10 @@ locals {
   defichain_tags = {
     crypto = "defichain"
   }
+  theta_tags = {
+    crypto = "theta"
+  }
+  streamr_tags = {
+    crypto = "streamr"
+  }
 }

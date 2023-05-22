@@ -20,8 +20,20 @@ variable "nb_executors" {
   default     = 1
 }
 
+variable "nb_edge_nodes" {
+  type        = number
+  description = "Number of Edge nodes"
+  default     = 1
+}
+
 variable "admin_username" {
   description = "Administrator username for any OS"
+  type        = string
+  sensitive   = true
+}
+
+variable "windows_admin_password" {
+  description = "Windows administrator password"
   type        = string
   sensitive   = true
 }
