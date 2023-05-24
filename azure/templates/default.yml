@@ -43,7 +43,6 @@ write_files:
        sed -i 's/^PROMPT=.*/PROMPT="[%{$fg[$NCOLOR]%}%B%n%b%{$reset_color%}@$HOST:%{$fg[red]%}%30<...<%~%<<%{$reset_color%}]%(!.#.$) "/' ~/.oh-my-zsh/custom/mh.zsh-theme
        cd ~/.oh-my-zsh && git clone https://github.com/zsh-users/zsh-syntax-highlighting.git
        echo "source ~/.oh-my-zsh/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh" >> ~/.zshrc
-       echo "source ~/.oh-my-zsh/plugins/z/z.sh" >> ~/.zshrc
        echo 'DISABLE_UPDATE_PROMPT="true"' >> ~/.zshrc
        echo "alias cls='clear'" >> ~/.zshrc
        echo "alias cat='/usr/local/bin/ccat'" >> ~/.zshrc

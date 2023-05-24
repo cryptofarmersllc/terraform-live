@@ -38,7 +38,7 @@ resource "azurerm_network_security_rule" "thetaInboundInternetAllow" {
   source_address_prefix       = "Internet"
   source_port_range           = "*"
   destination_address_prefix  = "VirtualNetwork"
-  destination_port_ranges     = ["3389", "5900"]
+  destination_port_ranges     = ["1122", "3389"]
   resource_group_name         = azurerm_resource_group.rg.name
   network_security_group_name = azurerm_network_security_group.theta.name
 }
@@ -55,13 +55,13 @@ resource "azurerm_public_ip" "theta-edge" {
   tags                = local.theta_tags
 }
 
-/* resource "azurerm_public_ip" "theta-guardian" {
+resource "azurerm_public_ip" "theta-guardian" {
   name                = "ip-theta-guardian"
   resource_group_name = azurerm_resource_group.rg.name
   location            = azurerm_resource_group.rg.location
   allocation_method   = "Static"
   tags                = local.theta_tags
-} */
+}
 
 # -----------------------------
 # NETWORK INTERFACES
@@ -83,7 +83,7 @@ resource "azurerm_network_interface" "theta-edge" {
   tags = local.theta_tags
 }
 
-/* resource "azurerm_network_interface" "theta-guardian" {
+resource "azurerm_network_interface" "theta-guardian" {
   name                          = "nic-theta-guardian"
   location                      = azurerm_resource_group.rg.location
   resource_group_name           = azurerm_resource_group.rg.name
@@ -115,7 +115,7 @@ resource "azurerm_managed_disk" "theta-guardian" {
   }
 
   tags = local.theta_tags
-} */
+}
 
 # -----------------------------
 # VIRTUAL MACHINES
@@ -154,7 +154,7 @@ resource "azurerm_windows_virtual_machine" "theta-edge" {
   tags = local.theta_tags
 }
 
-/* resource "azurerm_linux_virtual_machine" "theta-guardian" {
+resource "azurerm_linux_virtual_machine" "theta-guardian" {
   name                = "theta-grdn"
   resource_group_name   = azurerm_resource_group.rg.name
   location              = azurerm_resource_group.rg.location
@@ -182,7 +182,7 @@ resource "azurerm_windows_virtual_machine" "theta-edge" {
     version   = "latest"
   }
 
-  custom_data = data.cloudinit_config.defichain.rendered
+  custom_data = data.cloudinit_config.theta.rendered
 
   lifecycle {
     ignore_changes = [custom_data]
@@ -199,7 +199,7 @@ resource "azurerm_virtual_machine_data_disk_attachment" "theta-guardian-dda" {
   virtual_machine_id = azurerm_linux_virtual_machine.theta-guardian.id
   lun                = 1
   caching            = "ReadWrite"
-} */
+}
 
 locals {
   nic_thetaedge_ids = azurerm_network_interface.theta-edge.*.id

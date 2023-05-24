@@ -1,0 +1,6 @@
+ #cloud-config
+runcmd:
+ - mkdir -p /data/guardian
+ - chmod -R o+wt /data/guardian
+
+
