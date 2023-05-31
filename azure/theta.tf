@@ -125,7 +125,7 @@ resource "azurerm_windows_virtual_machine" "theta-edge" {
   name                  = format("thetaedge%03d", count.index + 1)
   resource_group_name = azurerm_resource_group.rg.name
   location            = azurerm_resource_group.rg.location
-  size                = "Standard_B2ms"
+  size                = "Standard_B2s"
   admin_username      = var.admin_username
   admin_password      = var.windows_admin_password
   network_interface_ids = [local.nic_thetaedge_ids[count.index]]
