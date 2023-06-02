@@ -23,7 +23,7 @@ variable "nb_executors" {
 variable "nb_edge_nodes" {
   type        = number
   description = "Number of Edge nodes"
-  default     = 3
+  default     = 4
 }
 
 variable "admin_username" {

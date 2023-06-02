@@ -14,4 +14,4 @@ rpc:
   enabled: true
   address: 127.0.0.1
 log:
-  levels: "*:info,guardian:debug"
+  levels: "*:info,guardian:"
