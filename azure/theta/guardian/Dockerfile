@@ -18,6 +18,3 @@ RUN mkdir -p /home/theta/mainnet/bin /home/theta/mainnet/guardian/node \
 WORKDIR /home/theta/mainnet/bin
 
 ENTRYPOINT ["/home/theta/mainnet/bin/theta"]
-
-
-

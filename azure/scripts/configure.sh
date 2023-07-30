@@ -43,7 +43,7 @@ Yes to remove db, no to remove ancient db
 #Run your beacon node
 docker run -d -v /data/ethereum/beacon:/data -v /data/ethereum/logs:/logs -v /data/ethereum/config:/config \
   --network="host" --name beacon-node-1 --restart on-failure:3 --security-opt="no-new-privileges=true" \
-  gcr.io/prysmaticlabs/prysm/beacon-chain:v4.0.5 \
+  gcr.io/prysmaticlabs/prysm/beacon-chain:v4.0.7 \
   --datadir=/data \
   --rpc-host=0.0.0.0 \
   --monitoring-host=0.0.0.0 \
@@ -52,9 +52,7 @@ docker run -d -v /data/ethereum/beacon:/data -v /data/ethereum/logs:/logs -v /da
   --log-file=/logs/beacon-node.log \
   --accept-terms-of-use \
   --suggested-fee-recipient=0xa63Ce14Bc241812e3081A74b0b999b0D2bF0657F \
-  --http-mev-relay=http://localhost:18550 \
-  --build-block-parallel \
-  --enable-registration-cache
+  --http-mev-relay=http://localhost:18550
 
 #Generate key pairs
 wget https://github.com/ethereum/staking-deposit-cli/releases/download/v2.1.0/staking_deposit-cli-ce8cbb6-linux-amd64.tar.gz
@@ -68,7 +66,7 @@ create secret.txt
 #Node 1
 docker run -it --rm \
   -v $HOME/staking_deposit-cli/validator_keys:/keys -v /data/ethereum/node1/wallet:/wallet \
-  gcr.io/prysmaticlabs/prysm/validator:v4.0.5 \
+  gcr.io/prysmaticlabs/prysm/validator:v4.0.7 \
   accounts import --accept-terms-of-use \
   --keys-dir=/keys --account-password-file=/wallet/secret.txt \
   --wallet-dir=/wallet --wallet-password-file=/wallet/secret.txt
@@ -77,7 +75,7 @@ docker run -it --rm \
 #List accounts
 docker run -it --rm \
   -v /data/ethereum/wallet:/wallet \
-  gcr.io/prysmaticlabs/prysm/validator:v4.0.5 \
+  gcr.io/prysmaticlabs/prysm/validator:v4.0.7 \
   accounts list --accept-terms-of-use --show-private-keys \
   --wallet-dir=/wallet --wallet-password-file=/wallet/secret.txt
   
@@ -85,7 +83,7 @@ docker run -it --rm \
 #List validator indices
 docker run -it --rm --network="host" \
   -v /data/ethereum/wallet:/wallet \
-  gcr.io/prysmaticlabs/prysm/validator:v4.0.5 \
+  gcr.io/prysmaticlabs/prysm/validator:v4.0.7 \
   accounts list --accept-terms-of-use \
   --wallet-dir=/wallet --wallet-password-file=/wallet/secret.txt \
   --list-validator-indices --beacon-rpc-provider=127.0.0.1:4000
@@ -93,7 +91,7 @@ docker run -it --rm --network="host" \
 #Run your validator
 docker run -d -v /data/ethereum/wallet:/wallet -v /data/ethereum/validatorDB:/validatorDB -v /data/ethereum/logs:/logs \
   --network="host" --restart on-failure:3 --security-opt="no-new-privileges=true" \
-  --name validator-1 gcr.io/prysmaticlabs/prysm/validator:v4.0.5 \
+  --name validator-1 gcr.io/prysmaticlabs/prysm/validator:v4.0.7 \
   --beacon-rpc-provider=localhost:4000 \
   --monitoring-host=0.0.0.0 \
   --wallet-dir=/wallet \
@@ -107,7 +105,7 @@ docker run -d -v /data/ethereum/wallet:/wallet -v /data/ethereum/validatorDB:/va
 
 #Run mev-boost per node
 docker run -d --network="host" --restart on-failure:3 --security-opt="no-new-privileges=true" \
---name mev-boost flashbots/mev-boost:1.5.0 \
+--name mev-boost flashbots/mev-boost:1.6 \
 -mainnet \
 -relay-check -relays https://0x8b5d2e73e2a3a55c6c87b8b6eb92e0149a125c852751db1422fa951e42a09b82c142c3ea98d0d9930b056a3bc9896b8f@bloxroute.max-profit.blxrbdn.com,https://0xa1559ace749633b997cb3fdacffb890aeebdb0f5a3b6aaa7eeeaf1a38af0a8fe88b9e4b1f61f236d2e64d95733327a62@relay.ultrasound.money,https://0xac6e77dfe25ecd6110b8e780608cce0dab71fdd5ebea22a16c0205200f2f8e2e3ad3b71d3499c54ad14d6c21b41a37ae@boost-relay.flashbots.net
 #Setup notification on beaconchain for the new node
