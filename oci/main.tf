@@ -50,3 +50,19 @@ locals {
     "crypto" = "ethereum"
   }
 }
+
+# -----------------------------
+# INTERNET GATEWAY
+# -----------------------------
+
+resource "oci_core_internet_gateway" "ig" {
+    #Required
+    compartment_id = oci_identity_compartment.eth_compartment.compartment_id
+    vcn_id = oci_core_vcn.vcn.id
+
+    #Optional
+    enabled = true
+    display_name = "Internet Gateway"
+    freeform_tags = {"crypto" = "ethereum"}
+    route_table_id = oci_core_vcn.vcn.default_route_table_id
+}

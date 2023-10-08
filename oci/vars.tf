@@ -3,7 +3,7 @@ variable "tenancy_ocid" {
 }
 
 variable "user_ocid" {
-  default     = "ocid1.user.oc1..aaaaaaaac7mcm3xnipmrqovkqikietxljyuumvpua2q3lpzhsx45vmza4juq"
+  default     = "ocid1.user.oc1..aaaaaaaabvzc7ztutherxyt6qgtkivewvph5rxdd4bktjuclknod6cabydfa"
   sensitive   = true
 }
 

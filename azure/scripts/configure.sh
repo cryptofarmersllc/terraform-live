@@ -4,7 +4,7 @@ docker run -d --name executor-node \
   -v /data/ethereum/execution:/root/.ethereum -v /data/ethereum/config:/root/config \
   -p 6060:6060 -p 8551:8551 -p 30303:30303/tcp -p 30303:30303/udp \
   --restart on-failure:3 --security-opt="no-new-privileges=true" \
-  ethereum/client-go:v1.12.0 \
+  ethereum/client-go:v1.12.2 \
   --mainnet \
   --authrpc.addr 0.0.0.0 \
   --authrpc.jwtsecret=/root/config/jwt.hex \
@@ -24,14 +24,14 @@ docker run -d --name executor-node \
 #Prune Geth
 docker run -d --name prune-geth \
   -v /data/ethereum/data:/root/.ethereum \
-  ethereum/client-go:v1.12.0 \
+  ethereum/client-go:v1.12.2 \
   snapshot prune-state \
   --mainnet
 #Geth attach
-dki -v /data/ethereum/execution:/root/.ethereum ethereum/client-go:v1.12.0 attach
+dki -v /data/ethereum/execution:/root/.ethereum ethereum/client-go:v1.12.2 attach
 
 #Geth removedb
-dki -v /data/ethereum/execution:/root/.ethereum -v /data/ethereum/config:/root/config ethereum/client-go:v1.12.0 removedb
+dki -v /data/ethereum/execution:/root/.ethereum -v /data/ethereum/config:/root/config ethereum/client-go:v1.12.2 removedb
 Yes to remove db, no to remove ancient db
 
 #How to rewind blockchain head
@@ -41,15 +41,14 @@ Yes to remove db, no to remove ancient db
 
 ----------------------------------------------------------------------------------------------------------------
 #Run your beacon node
-docker run -d -v /data/ethereum/beacon:/data -v /data/ethereum/logs:/logs -v /data/ethereum/config:/config \
+docker run -d -v /data/ethereum/beacon:/data -v /data/ethereum/config:/config \
   --network="host" --name beacon-node-1 --restart on-failure:3 --security-opt="no-new-privileges=true" \
-  gcr.io/prysmaticlabs/prysm/beacon-chain:v4.0.7 \
+  gcr.io/prysmaticlabs/prysm/beacon-chain:v4.0.8 \
   --datadir=/data \
   --rpc-host=0.0.0.0 \
   --monitoring-host=0.0.0.0 \
   --execution-endpoint=http://localhost:8551 \
   --jwt-secret=/config/jwt.hex \
-  --log-file=/logs/beacon-node.log \
   --accept-terms-of-use \
   --suggested-fee-recipient=0xa63Ce14Bc241812e3081A74b0b999b0D2bF0657F \
   --http-mev-relay=http://localhost:18550
@@ -66,7 +65,7 @@ create secret.txt
 #Node 1
 docker run -it --rm \
   -v $HOME/staking_deposit-cli/validator_keys:/keys -v /data/ethereum/node1/wallet:/wallet \
-  gcr.io/prysmaticlabs/prysm/validator:v4.0.7 \
+  gcr.io/prysmaticlabs/prysm/validator:v4.0.8 \
   accounts import --accept-terms-of-use \
   --keys-dir=/keys --account-password-file=/wallet/secret.txt \
   --wallet-dir=/wallet --wallet-password-file=/wallet/secret.txt
@@ -75,7 +74,7 @@ docker run -it --rm \
 #List accounts
 docker run -it --rm \
   -v /data/ethereum/wallet:/wallet \
-  gcr.io/prysmaticlabs/prysm/validator:v4.0.7 \
+  gcr.io/prysmaticlabs/prysm/validator:v4.0.8 \
   accounts list --accept-terms-of-use --show-private-keys \
   --wallet-dir=/wallet --wallet-password-file=/wallet/secret.txt
   
@@ -83,21 +82,20 @@ docker run -it --rm \
 #List validator indices
 docker run -it --rm --network="host" \
   -v /data/ethereum/wallet:/wallet \
-  gcr.io/prysmaticlabs/prysm/validator:v4.0.7 \
+  gcr.io/prysmaticlabs/prysm/validator:v4.0.8 \
   accounts list --accept-terms-of-use \
   --wallet-dir=/wallet --wallet-password-file=/wallet/secret.txt \
   --list-validator-indices --beacon-rpc-provider=127.0.0.1:4000
 
 #Run your validator
-docker run -d -v /data/ethereum/wallet:/wallet -v /data/ethereum/validatorDB:/validatorDB -v /data/ethereum/logs:/logs \
+docker run -d -v /data/ethereum/wallet:/wallet -v /data/ethereum/validatorDB:/validatorDB \
   --network="host" --restart on-failure:3 --security-opt="no-new-privileges=true" \
-  --name validator-1 gcr.io/prysmaticlabs/prysm/validator:v4.0.7 \
+  --name validator-1 gcr.io/prysmaticlabs/prysm/validator:v4.0.8 \
   --beacon-rpc-provider=localhost:4000 \
   --monitoring-host=0.0.0.0 \
   --wallet-dir=/wallet \
   --wallet-password-file=/wallet/secret.txt \
   --datadir=/validatorDB \
-  --log-file=/logs/validator.log \
   --graffiti="Crypto Farmers" \
   --accept-terms-of-use \
   --suggested-fee-recipient=0xa63Ce14Bc241812e3081A74b0b999b0D2bF0657F \
