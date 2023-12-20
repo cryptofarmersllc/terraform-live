@@ -2,10 +2,10 @@ FROM debian:stable-slim
 
 ENV USER=defichain \
     HOME=/home/defichain \
-    VERSION=3.2.1
+    VERSION=4.0.6
 
-RUN apt-get update \
-    && apt-get full-upgrade \
+RUN apt-get -y update \
+    && apt-get -y full-upgrade \
     && apt-get install -y sudo wget \
     && useradd -m ${USER}
 

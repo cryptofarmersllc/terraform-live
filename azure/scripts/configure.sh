@@ -4,7 +4,7 @@ docker run -d --name executor-node \
   -v /data/ethereum/execution:/root/.ethereum -v /data/ethereum/config:/root/config \
   -p 6060:6060 -p 8551:8551 -p 30303:30303/tcp -p 30303:30303/udp \
   --restart on-failure:3 --security-opt="no-new-privileges=true" \
-  ethereum/client-go:v1.12.2 \
+  ethereum/client-go:v1.13.5 \
   --mainnet \
   --authrpc.addr 0.0.0.0 \
   --authrpc.jwtsecret=/root/config/jwt.hex \
@@ -16,9 +16,9 @@ docker run -d --name executor-node \
   --log.file /root/.ethereum/logs/executor.log \
   --log.maxbackups 3 \
   --log.maxsize 100 \
-  --log.format logfmt
-  # --snapshot=false
-  # --db.engine=pebble
+  --log.format logfmt \
+  --db.engine=pebble \
+  --state.scheme=path
   
 
 #Prune Geth
@@ -43,7 +43,7 @@ Yes to remove db, no to remove ancient db
 #Run your beacon node
 docker run -d -v /data/ethereum/beacon:/data -v /data/ethereum/config:/config \
   --network="host" --name beacon-node-1 --restart on-failure:3 --security-opt="no-new-privileges=true" \
-  gcr.io/prysmaticlabs/prysm/beacon-chain:v4.0.8 \
+  gcr.io/prysmaticlabs/prysm/beacon-chain:v4.1.1 \
   --datadir=/data \
   --rpc-host=0.0.0.0 \
   --monitoring-host=0.0.0.0 \
@@ -65,7 +65,7 @@ create secret.txt
 #Node 1
 docker run -it --rm \
   -v $HOME/staking_deposit-cli/validator_keys:/keys -v /data/ethereum/node1/wallet:/wallet \
-  gcr.io/prysmaticlabs/prysm/validator:v4.0.8 \
+  gcr.io/prysmaticlabs/prysm/validator:v4.1.1 \
   accounts import --accept-terms-of-use \
   --keys-dir=/keys --account-password-file=/wallet/secret.txt \
   --wallet-dir=/wallet --wallet-password-file=/wallet/secret.txt
@@ -74,7 +74,7 @@ docker run -it --rm \
 #List accounts
 docker run -it --rm \
   -v /data/ethereum/wallet:/wallet \
-  gcr.io/prysmaticlabs/prysm/validator:v4.0.8 \
+  gcr.io/prysmaticlabs/prysm/validator:v4.1.1 \
   accounts list --accept-terms-of-use --show-private-keys \
   --wallet-dir=/wallet --wallet-password-file=/wallet/secret.txt
   
@@ -82,7 +82,7 @@ docker run -it --rm \
 #List validator indices
 docker run -it --rm --network="host" \
   -v /data/ethereum/wallet:/wallet \
-  gcr.io/prysmaticlabs/prysm/validator:v4.0.8 \
+  gcr.io/prysmaticlabs/prysm/validator:v4.1.1 \
   accounts list --accept-terms-of-use \
   --wallet-dir=/wallet --wallet-password-file=/wallet/secret.txt \
   --list-validator-indices --beacon-rpc-provider=127.0.0.1:4000
@@ -90,7 +90,7 @@ docker run -it --rm --network="host" \
 #Run your validator
 docker run -d -v /data/ethereum/wallet:/wallet -v /data/ethereum/validatorDB:/validatorDB \
   --network="host" --restart on-failure:3 --security-opt="no-new-privileges=true" \
-  --name validator-1 gcr.io/prysmaticlabs/prysm/validator:v4.0.8 \
+  --name validator-1 gcr.io/prysmaticlabs/prysm/validator:v4.1.1 \
   --beacon-rpc-provider=localhost:4000 \
   --monitoring-host=0.0.0.0 \
   --wallet-dir=/wallet \
